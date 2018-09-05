@@ -18,13 +18,25 @@ function Book({title}) {
   );
 }
 
-function Turn({author, books}) {
-  return (<div className="row turn" style={{backgroundColor: "white"}}>
+function Turn({author, books, highlight,onAnswerSelected}) {
+
+  function highlightToBgColor(){
+
+      const mapping = {
+        'none':'',
+        'correct':'green',
+        'wrong':'red'
+      }
+    return mapping[highlight];
+  }
+
+
+  return (<div className="row turn" style={{backgroundColor: highlightToBgColor(highlight)}}>
     <div className="col-4 offset-1">
       <img src={author.imageUrl} className="authorimage" alt="Author"/>
     </div>
     <div className="col-6">
-      {books.map((title) => <Book title={title} key={title} />)}
+      {books.map((title) => <Book title={title} key={title}  onClick={onAnswerSelected}  />)}
     </div>
   </div>);
 }
@@ -43,11 +55,11 @@ function Footer() {
   </div>);
 }
 
-function AuthorQuiz({turnData}) {
+function AuthorQuiz({turnData, highlight, onAnswerSelected}) {
   return (
     <div className="container-fluid">
       <Hero />
-      <Turn {...turnData} />
+      <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
       <Continue />
       <Footer />
     </div>
